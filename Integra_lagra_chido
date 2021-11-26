@@ -1,0 +1,78 @@
+import copy
+
+class Matriz:
+    def _init_(self,matriz):
+        n=len(matriz)
+        aux=0
+        for i in range(n-1):
+            if range(len(matriz[i]))!=range(len(matriz[i+1])):
+                aux=1
+                break
+        if aux==0:
+            self.matriz=matriz
+        else:
+            print("Algún renglon de la matriz contiene un número diferente de elementos, compruebe la matriz.")
+    
+    def _add_(self,objeto):
+        n=range(len(self.matriz))
+        c= copy.deepcopy(self.matriz)
+        if isinstance(objeto,Matriz):
+            n_1=range(len(objeto.matriz))
+            if n==n_1 and range(len(self.matriz[0]))==range(len(objeto.matriz[0])):
+                for i in n:
+                    for j in range(len(self.matriz[0])):
+                        c[i][j]=(self.matriz[i][j]+objeto.matriz[i][j])
+            else:
+                return "Las matrices deben de ser del mismo tamaño."
+        else:
+            return "Solo se pueden sumar matrices."
+        return c
+    
+    def _sub_(self,objeto):
+        n=range(len(self.matriz))
+        c= copy.deepcopy(self.matriz)
+        if isinstance(objeto,Matriz):
+            n_1=range(len(objeto.matriz))
+            if n==n_1 and range(len(self.matriz[0]))==range(len(objeto.matriz[0])):
+                for i in n:
+                    for j in range(len(self.matriz[0])):
+                        c[i][j]=self.matriz[i][j]-objeto.matriz[i][j]
+            else:
+                return "Las matrices deben de ser del mismo tamaño."
+        else:
+            return "Solo se pueden sumar matrices."
+        return c
+    
+    def _mul_(self,objeto):
+        c= copy.deepcopy(self.matriz)
+        n=len(self.matriz)
+        n_col=len(self.matriz[0])
+        multi=[]
+        if isinstance(objeto,(int,float)):
+            for i in n:
+                for j in n_col:
+                    c[i][j]*=objeto
+            return c
+        elif isinstance(objeto,Matriz):
+            if len(self.matriz[0])==len(objeto.matriz):
+                for i in range(n):
+                    multi.append([])
+                    for j in range(len(objeto.matriz[0])):
+                        multi[i].append(0)
+                for i in range(n):
+                    for j in range(len(objeto.matriz[0])):
+                        for k in range(len(self.matriz[0])):
+                            multi[i][j]+=self.matriz[i][k]*objeto.matriz[k][j]
+                return multi
+            else:
+                return "Las matrices no son compatibles"
+        else:
+            return "Solo se pueden multiplicar matrices por otra matriz o un número real."
+        
+    
+
+A=Matriz([[1,2],[4,5],[7,8]])
+B=Matriz([[1,2,3],[4,5,6]])
+
+print(A+B)
+print(B*A)
